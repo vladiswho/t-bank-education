@@ -1,1 +1,3 @@
-# t-bank-education
+npm install node nodemon express node-fetch
+
+nodemon app.js
