@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
   });
   
 
-router.get('/item/:number', async (req, res) => {
+router.get('/item/:number', async (req, res) => { // Получение изображения
     const { number } = req.params;
 
     const cached_data = cache.get_data(`/item/${number}`);
@@ -43,11 +43,28 @@ router.get('/item/:number', async (req, res) => {
 });
 
 
-router.get('/cache/size', async (req, res) => {
+router.get('/cache/size', async (req, res) => { // Получение текущего размера кеша и количество изображений в нем
 
     const max_size = cache.get_max_size();
     const current_size = cache.get_current_size();
     res.json({max_size: max_size, Current_Size: current_size});
+});
+
+
+router.get('/items', async (req, res) => { // Получение изображений в кеше
+    try {
+        const items = cache.get_items();
+        if (items.length === 0) 
+            res.status(400).send('Кеш пустой!');
+        else
+        {
+            res.set('Content-Type', 'application/json');
+            res.json({'Данные в кеше': items});
+        }
+    } catch (error) {
+        console.error('Ошибка при получении элементов:', error);
+        res.status(500).send('Ошибка сервера');
+    }
 });
 
 module.exports = router;

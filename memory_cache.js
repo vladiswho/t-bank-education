@@ -16,6 +16,14 @@ class Memory_cache {
         return this.cache.size;
     }
 
+    get_items() {
+        const itemsArray = [];
+        this.cache.forEach((value, key) => {
+            itemsArray.push({ "путь" : key});
+        });
+        return itemsArray;
+    }
+
     set_data(url, value) {
         if (this.cache.size >= this.max_size) {
             const firstKey = this.cache.keys().next().value;
@@ -27,6 +35,13 @@ class Memory_cache {
     set_max_size(new_size) {
         this.max_size = new_size;
         while (this.cache.size > this.max_size) {
+            const firstKey = this.cache.keys().next().value;
+            this.cache.delete(firstKey);
+        }
+    }
+
+    delete_data() {
+        while (this.cache.size > 0) {
             const firstKey = this.cache.keys().next().value;
             this.cache.delete(firstKey);
         }
